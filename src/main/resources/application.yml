@@ -1,0 +1,4 @@
+outputs:
+    kafka:
+        bootstrapServers: kafka01.local:9090,kafka02.local:9090,kafka03.local:9090
+        topic: test
