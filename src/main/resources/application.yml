@@ -1,4 +1,11 @@
+
 outputs:
     kafka:
-        bootstrapServers: kafka01.local:9090,kafka02.local:9090,kafka03.local:9090
+        bootstrapServers: kafka01.local:9092,kafka02.local:9092,kafka03.local:9092
         topic: test
+logging:
+    level:
+        root: info
+        com:
+            christian: debug
+

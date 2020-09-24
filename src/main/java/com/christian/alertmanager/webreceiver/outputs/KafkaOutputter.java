@@ -33,7 +33,6 @@ public class KafkaOutputter implements EventOutput {
 
     @Override
     public void process(JsonObject jsonObject) {
-
         ProducerRecord<String, String> record = new ProducerRecord<>(kafkaConfig.getTopic(), jsonObject.toString());
         try {
             producer.send(record);

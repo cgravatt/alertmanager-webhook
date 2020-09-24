@@ -1,6 +1,7 @@
 package com.christian.alertmanager.webreceiver.controllers;
 
 import com.christian.alertmanager.webreceiver.services.WebHookProcessingService;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebHookController {
 
     private WebHookProcessingService webHookProcessingService;
+    private Gson gson = new Gson();
 
     @Autowired
     public WebHookController(WebHookProcessingService webHookProcessingService) {
@@ -22,10 +24,14 @@ public class WebHookController {
     }
 
     @PostMapping("/alertmanager/receive")
-    public ResponseEntity receiver(@RequestBody JsonObject requestBody) {
+    public ResponseEntity receiver(@RequestBody String requestBody) {
+
+        JsonObject json = gson.fromJson(requestBody,JsonObject.class);
+
+        log.debug("Received event from alertmanager. Event is: {}", json.toString());
 
         try {
-            webHookProcessingService.processWebhookEvent(requestBody);
+            webHookProcessingService.processWebhookEvent(json);
         } catch (Exception e) {
             log.error("Failed processing webhook event: {}", requestBody.toString(), e);
             return new ResponseEntity<>("Error encountered", HttpStatus.INTERNAL_SERVER_ERROR);
