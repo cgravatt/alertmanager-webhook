@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 @Slf4j
 public class WebHookController {
@@ -27,8 +31,8 @@ public class WebHookController {
     public ResponseEntity receiver(@RequestBody String requestBody) {
 
         JsonObject json = gson.fromJson(requestBody,JsonObject.class);
-
         log.debug("Received event from alertmanager. Event is: {}", json.toString());
+        json.addProperty("WebHookReceiveTime", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
 
         try {
             webHookProcessingService.processWebhookEvent(json);
