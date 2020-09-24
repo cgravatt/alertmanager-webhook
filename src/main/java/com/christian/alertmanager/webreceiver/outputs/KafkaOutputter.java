@@ -21,6 +21,7 @@ public class KafkaOutputter implements EventOutput {
     @Autowired
     public KafkaOutputter(KafkaConfig kafkaConfig) {
 
+        this.kafkaConfig = kafkaConfig;
         Properties kafkaProps = new Properties();
         kafkaProps.put("bootstrap.servers", kafkaConfig.getBootstrapServers());
         kafkaProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
